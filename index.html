@@ -7,6 +7,9 @@
   <meta name="description" content="Project/Product Manager с 13+ годами опыта: финтех, телеком, ИТ. Agile/Scrum, запускает фичи быстрее, развивает команды. Версия сайта в стиле Star Wars, один HTML‑файл." />
   <meta name="theme-color" content="#000000" />
 
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23facc15' stroke-width='1.2'><path d='M5 19h14'/><rect x='7' y='5' width='10' height='8' rx='2'/><path d='M9 13v4m6-4v4'/></svg>">
+
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="Владислав Гальчевский — Project / Product Manager"/>
@@ -55,8 +58,10 @@
     .menu-toggle{display:none; background:transparent; border:1px solid var(--line); border-radius:12px; padding:8px 12px; color:var(--muted)}
     .menu.open{display:flex}
     body.menu-open{overflow:hidden}
+    .menu-overlay{display:none; position:fixed; inset:0; z-index:89; background:rgba(0,0,0,.3)}
+    .menu-overlay.active{display:block}
     @media (max-width:960px){
-      .menu{display:none; position:fixed; left:max(4vw,12px); right:max(4vw,12px); top:calc(var(--nav-h) - 8px); padding:14px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(180deg, color-mix(in oklab, var(--panel) 98%, transparent), color-mix(in oklab, var(--panel) 92%, transparent)); box-shadow:var(--shadow); gap:10px; flex-direction:column}
+      .menu{display:none; position:fixed; left:max(4vw,12px); right:max(4vw,12px); top:calc(var(--nav-h) - 8px); padding:14px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(180deg, color-mix(in oklab, var(--panel) 98%, transparent), color-mix(in oklab, var(--panel) 92%, transparent)); box-shadow:var(--shadow); gap:10px; flex-direction:column; z-index:91}
       .menu .cta{justify-content:center}
       .menu-toggle{display:inline-flex; align-items:center; gap:8px}
     }
@@ -73,7 +78,7 @@
       background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 78%, var(--accent) 22%), color-mix(in oklab, var(--panel) 70%, var(--accent) 14%));
       box-shadow: 0 6px 20px rgba(0,0,0,.35), 0 0 0 2px color-mix(in oklab, var(--accent) 22%, transparent) inset;
     }
-    .cta.theme-toggle span{ color:#0b1220; font-weight:800; text-shadow:0 1px 0 rgba(255,255,255,.38); letter-spacing:.2px }
+    .cta.theme-toggle span{ color:var(--text); font-weight:800; text-shadow:0 1px 0 rgba(255,255,255,.38); letter-spacing:.2px }
 
     /* Hero */
     .hero{position:relative; padding:90px 0 40px; border-bottom:1px solid var(--line); background:
@@ -91,11 +96,11 @@
     .hero-cta{position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:14px; margin:26px 0 0}
 
     /* Portrait */
-    .portrait-card{position:relative; border:1px solid var(--line); border-radius:18px; padding:10px; background:linear-gradient(180deg, color-mix(in oklab, var(--panel) 98%, transparent), color-mix(in oklab, var(--panel) 94%, transparent)); box-shadow:var(--shadow)}
-    .portrait-wrap{position:relative; overflow:hidden; border-radius:18px; aspect-ratio:1/1; background:#0b0d10}
-    .portrait{width:100%; height:100%; object-fit:cover; filter:saturate(108%)}
-    .portrait-card::after{content:""; position:absolute; inset:-1px; border-radius:18px; pointer-events:none; background:linear-gradient(180deg, color-mix(in oklab, var(--accent) 20%, transparent), transparent 40%, color-mix(in oklab, var(--accent-2) 16%, transparent) 80%)}
-    .portrait-sabers{position:absolute; inset:8px; pointer-events:none}
+    .portrait-card{position:relative; border:1px solid var(--line); border-radius:18px; padding:10px; background:linear-gradient(180deg, color-mix(in oklab, var(--panel) 98%, transparent), color-mix(in oklab, var(--panel) 94%, transparent)); box-shadow:var(--shadow); align-self:start; margin-top:20px}
+    .portrait-wrap{position:relative; overflow:hidden; border-radius:18px; aspect-ratio:1/1; background:#0b0d10; z-index:2}
+    .portrait{width:100%; height:100%; object-fit:cover; filter:saturate(108%); position:relative; z-index:2}
+    .portrait-card::after{content:""; position:absolute; inset:-1px; border-radius:18px; pointer-events:none; background:linear-gradient(180deg, color-mix(in oklab, var(--accent) 20%, transparent), transparent 40%, color-mix(in oklab, var(--accent-2) 16%, transparent) 80%); z-index:1}
+    .portrait-sabers{position:absolute; inset:8px; pointer-events:none; z-index:3}
     .saber{position:absolute; top:0; bottom:0; width:6px; border-radius:8px; box-shadow:0 0 32px currentColor}
     .saber.blue{left:-10px; color:var(--accent-3); background:currentColor}
     .saber.red{right:-10px; color:var(--accent-2); background:currentColor}
@@ -147,16 +152,43 @@
     .scroll-top{ position:fixed; right:16px; bottom:16px; border:none; border-radius:12px; padding:10px; background:var(--panel); border:1px solid var(--line); color:var(--text); box-shadow: var(--shadow); cursor:pointer; opacity:0; visibility:hidden; transform:translateY(8px); transition: opacity .18s ease, transform .18s ease, visibility .18s; z-index:95; }
     .scroll-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
 
+    /* Music control */
+    .music-control{ position:fixed; left:16px; bottom:16px; border:none; border-radius:12px; padding:10px; background:var(--panel); border:1px solid var(--line); color:var(--text); box-shadow: var(--shadow); cursor:pointer; z-index:95; display:flex; align-items:center; gap:8px; }
+    .music-control.muted{ opacity:0.7; }
+    .music-control.muted .music-icon{ opacity:0.5; }
+
     /* Footer */
     footer{padding:50px 0}
     .footer-grid{display:grid; gap:18px; grid-template-columns:1.5fr 1fr}
 
+    /* Language switcher */
+    .lang-switcher{background:transparent; border:none; color:var(--muted); font-weight:600; cursor:pointer; padding:4px 8px; border-radius:8px; transition:color .2s}
+    .lang-switcher:hover{color:var(--text)}
+
     /* Responsive */
-    @media (max-width:860px){ .hero-grid{grid-template-columns:1fr; gap:18px} }
+    @media (max-width:860px){ 
+      .hero-grid{grid-template-columns:1fr; gap:18px} 
+      .portrait-card{ margin-top:0; justify-self:center; max-width:400px; width:100% }
+    }
     @media (max-width:640px){ .container{width:min(640px,94vw)} .hero{padding:76px 0 28px} .title{font-size:clamp(22px,9.5vw,36px)} .card{padding:18px; border-radius:16px} }
   </style>
 </head>
 <body>
+  <!-- Audio for background music -->
+  <audio id="backgroundMusic" loop>
+    <source src="Zvezdnye_vojny_-_Imperskij_marsh_(SkySound.cc).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Music control button -->
+  <button id="musicControl" class="music-control" aria-label="Управление музыкой">
+    <svg class="music-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+      <path d="M9 18V5l12-2v13"></path>
+      <circle cx="6" cy="18" r="3"></circle>
+      <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+    <span>Музыка</span>
+  </button>
+
   <!-- Layers -->
   <canvas id="stars" class="layer" aria-hidden="true"></canvas>
   <div class="layer grain" aria-hidden="true"></div>
@@ -175,38 +207,40 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
       <div class="menu" id="menu">
-        <a href="#about" onclick="closeMenu()">Обо мне</a>
-        <a href="#experience" onclick="closeMenu()">Опыт</a>
-        <a href="#cases" onclick="closeMenu()">Кейсы</a>
-        <a href="#skills" onclick="closeMenu()">Навыки</a>
-        <a href="#education" onclick="closeMenu()">Обучение</a>
-        <a href="#contacts" onclick="closeMenu()">Контакты</a>
-        <button class="cta theme-toggle" type="button" onclick="toggleTheme(event)" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span>Переключить сторону</span></button>
+        <a href="#about" onclick="closeMenu()" data-i18n="nav.about">Обо мне</a>
+        <a href="#experience" onclick="closeMenu()" data-i18n="nav.experience">Опыт</a>
+        <a href="#cases" onclick="closeMenu()" data-i18n="nav.cases">Кейсы</a>
+        <a href="#skills" onclick="closeMenu()" data-i18n="nav.skills">Навыки</a>
+        <a href="#education" onclick="closeMenu()" data-i18n="nav.education">Обучение</a>
+        <a href="#contacts" onclick="closeMenu()" data-i18n="nav.contacts">Контакты</a>
+        <button class="lang-switcher" onclick="toggleLanguage()" data-i18n="nav.lang">EN</button>
+        <button class="cta theme-toggle" type="button" onclick="toggleTheme(event)" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span data-i18n="nav.theme">Переключить сторону</span></button>
       </div>
     </div>
   </nav>
+  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
   <!-- HERO -->
   <header id="top" class="hero">
     <div class="container hero-grid">
       <div>
-        <span class="lead">Ташкент • Узбекистан • Готов к переезду и редким командировкам</span>
-        <h1 class="title">Владислав Гальчевский — Project / Product Manager</h1>
-        <p class="subtitle">Agile/Scrum, процессы и метрики. 13+ лет в финтех/телеком/ИТ. Помогаю командам ускоряться, становиться предсказуемыми и выпускать ценность регулярными релизами.</p>
+        <span class="lead" data-i18n="hero.location">Ташкент • Узбекистан • Готов к переезду и редким командировкам</span>
+        <h1 class="title" data-i18n="hero.title">Владислав Гальчевский — Project / Product Manager</h1>
+        <p class="subtitle" data-i18n="hero.subtitle">Agile/Scrum, процессы и метрики. 13+ лет в финтех/телеком/ИТ. Помогаю командам ускоряться, становиться предсказуемыми и выпускать ценность регулярными релизами.</p>
         <div class="hero-cta">
-          <a class="cta" href="mailto:galchevsky.v.i@gmail.com" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span>Написать на Email</span></a>
-          <a class="ghost" href="#cv">Скачать резюме (PDF)</a>
+          <a class="cta" href="mailto:galchevsky.v.i@gmail.com" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span data-i18n="hero.email">Написать на Email</span></a>
+          <a class="ghost" href="#cv" data-i18n="hero.download">Скачать резюме (PDF)</a>
         </div>
         <div class="grid cols-4" style="margin-top:18px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-          <div class="kpi reveal"><div class="num">+25–30%</div><div class="cap">ускорение вывода фич</div></div>
-          <div class="kpi reveal"><div class="num">−15%</div><div class="cap">Time‑to‑Market</div></div>
-          <div class="kpi reveal"><div class="num">200+</div><div class="cap">обученных сотрудников</div></div>
-          <div class="kpi reveal"><div class="num">10k+</div><div class="cap">пользователей MVP</div></div>
+          <div class="kpi reveal"><div class="num">+25–30%</div><div class="cap" data-i18n="hero.kpi1">ускорение вывода фич</div></div>
+          <div class="kpi reveal"><div class="num">−15%</div><div class="cap" data-i18n="hero.kpi2">Time‑to‑Market</div></div>
+          <div class="kpi reveal"><div class="num">200+</div><div class="cap" data-i18n="hero.kpi3">обученных сотрудников</div></div>
+          <div class="kpi reveal"><div class="num">10k+</div><div class="cap" data-i18n="hero.kpi4">пользователей MVP</div></div>
         </div>
       </div>
       <aside class="portrait-card reveal" aria-label="Портрет">
         <div class="portrait-wrap">
-          <img class="portrait" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1120&auto=format&fit=crop" alt="Владислав Гальчевский" loading="lazy">
+          <img class="portrait" src="portrait_vlad.jpg" alt="Владислав Гальчевский" loading="lazy">
           <div class="portrait-sabers"><span class="saber blue"></span><span class="saber red"></span></div>
         </div>
       </aside>
@@ -214,9 +248,9 @@
     <div class="container">
       <div class="crawl-wrap">
         <div class="crawl" style="animation:crawlAnim 32s linear infinite">
-          <p>Episode I: The Project Manager Awakens</p>
-          <p>Балансирует между светлой и тёмной сторонами Agile, ведя команды к предсказуемости и ценности.</p>
-          <p>Миссия: скорость вывода, прозрачность, развитие людей.</p>
+          <p data-i18n="crawl.line1">Episode I: The Project Manager Awakens</p>
+          <p data-i18n="crawl.line2">Балансирует между светлой и тёмной сторонами Agile, ведя команды к предсказуемости и ценности.</p>
+          <p data-i18n="crawl.line3">Миссия: скорость вывода, прозрачность, развитие людей.</p>
         </div>
       </div>
     </div>
@@ -225,7 +259,7 @@
   <!-- QUICK CONTACTS -->
   <section class="section" aria-labelledby="contacts-quick">
     <div class="container">
-      <h2 class="h2" id="contacts-quick">Контакты одним взглядом</h2>
+      <h2 class="h2" id="contacts-quick" data-i18n="quickContacts.title">Контакты одним взглядом</h2>
       <div class="grid cols-3" style="margin-top:12px">
         <a class="pill reveal" href="tel:+998909900608" aria-label="Позвонить">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.08 4.18 2 2 0 014.06 2h3a2 2 0 012 1.72c.12.9.3 1.77.54 2.61a2 2 0 01-.45 2.11L8 9a16 16 0 006 6l.56-1.15a2 2 0 012.11-.45c.84.24 1.71.42 2.61.54A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.2"/></svg>
@@ -237,7 +271,7 @@
         </a>
         <div class="pill reveal">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 5.523-9 12-9 12S3 15.523 3 10a9 9 0 1118 0z" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.2"/></svg>
-          Ташкент, Узбекистан
+          <span data-i18n="quickContacts.location">Ташкент, Узбекистан</span>
         </div>
       </div>
     </div>
@@ -246,12 +280,12 @@
   <!-- ABOUT -->
   <section id="about" class="section">
     <div class="container">
-      <h2 class="h2">О Владиславе</h2>
+      <h2 class="h2" data-i18n="about.title">О Владиславе</h2>
       <ul class="p">
-        <li>13+ лет опыта в управлении проектами и продуктами, финтех/телеком/ИТ.</li>
-        <li>Agile/Scrum, трансформация процессов, масштабирование практик.</li>
-        <li>Метрики и данные → управляемость и предсказуемость.</li>
-        <li>Обучил и развил 200+ специалистов (воркшопы, менторство).</li>
+        <li data-i18n="about.item1">13+ лет опыта в управлении проектами и продуктами, финтех/телеком/ИТ.</li>
+        <li data-i18n="about.item2">Agile/Scrum, трансформация процессов, масштабирование практик.</li>
+        <li data-i18n="about.item3">Метрики и данные → управляемость и предсказуемость.</li>
+        <li data-i18n="about.item4">Обучил и развил 200+ специалистов (воркшопы, менторство).</li>
       </ul>
     </div>
   </section>
@@ -259,12 +293,12 @@
   <!-- EXPERIENCE -->
   <section id="experience" class="section">
     <div class="container">
-      <h2 class="h2">Опыт</h2>
+      <h2 class="h2" data-i18n="experience.title">Опыт</h2>
       <div class="grid cols-2" style="margin-top:6px">
-        <div class="card reveal"><div class="card-title">Project Manager / Scrum Master — AVO Services and Technology</div><p class="small muted">2024 — н.в. · Ташкент</p><ul class="muted"><li>Сформировал 3+ кросс‑функциональные команды, вывел их на зрелость.</li><li>DoR/DoD, ретроспективы, refinement → +25–30% скорости.</li><li>Метрики burnup/burndown, velocity, CFD → рост предсказуемости.</li><li>Сократил до 70% внутренних блокеров на стадии планирования.</li><li>Масштабирование практик (LeSS, Scrum of Scrums).</li></ul></div>
-        <div class="card reveal"><div class="card-title">Project Manager — AO Paynet</div><p class="small muted">март 2024 — н.в. · Ташкент</p><ul class="muted"><li>Полный цикл проектов: от идеи до релиза.</li><li>Коммуникации со стейкхолдерами, управление командой.</li><li>ТЗ, требования, договорная работа, тестирование.</li></ul></div>
-        <div class="card reveal"><div class="card-title">Project Manager — ООО «LEDИ» / OOO "Unitel" (Telecom)</div><p class="small muted">2016 — 2024</p><ul class="muted"><li>Планирование, команда, юридические документы.</li><li>Операционный контроль, урегулирование внештатных ситуаций.</li><li>Ретроспективы, отчётность.</li></ul></div>
-        <div class="card reveal"><div class="card-title">Project Manager — Codeband Digital</div><p class="small muted">2019 — 2020</p><ul class="muted"><li>Сбор/анализ, декомпозиция и приоритизация.</li><li>Фасилитация встреч и межкомандные коммуникации.</li></ul></div>
+        <div class="card reveal"><div class="card-title" data-i18n="experience.job1.title">Project Manager / Scrum Master — AVO Services and Technology</div><p class="small muted" data-i18n="experience.job1.period">2024 — н.в. · Ташкент</p><ul class="muted"><li data-i18n="experience.job1.item1">Сформировал 3+ кросс‑функциональные команды, вывел их на зрелость.</li><li data-i18n="experience.job1.item2">DoR/DoD, ретроспективы, refinement → +25–30% скорости.</li><li data-i18n="experience.job1.item3">Метрики burnup/burndown, velocity, CFD → рост предсказуемости.</li><li data-i18n="experience.job1.item4">Сократил до 70% внутренних блокеров на стадии планирования.</li><li data-i18n="experience.job1.item5">Масштабирование практик (LeSS, Scrum of Scrums).</li></ul></div>
+        <div class="card reveal"><div class="card-title" data-i18n="experience.job2.title">Project Manager — AO Paynet</div><p class="small muted" data-i18n="experience.job2.period">март 2024 — н.в. · Ташкент</p><ul class="muted"><li data-i18n="experience.job2.item1">Полный цикл проектов: от идеи до релиза.</li><li data-i18n="experience.job2.item2">Коммуникации со стейкхолдерами, управление командой.</li><li data-i18n="experience.job2.item3">ТЗ, требования, договорная работа, тестирование.</li></ul></div>
+        <div class="card reveal"><div class="card-title" data-i18n="experience.job3.title">Project Manager — ООО «LEDИ» / OOO "Unitel" (Telecom)</div><p class="small muted" data-i18n="experience.job3.period">2016 — 2024</p><ul class="muted"><li data-i18n="experience.job3.item1">Планирование, команда, юридические документы.</li><li data-i18n="experience.job3.item2">Операционный контроль, урегулирование внештатных ситуаций.</li><li data-i18n="experience.job3.item3">Ретроспективы, отчётность.</li></ul></div>
+        <div class="card reveal"><div class="card-title" data-i18n="experience.job4.title">Project Manager — Codeband Digital</div><p class="small muted" data-i18n="experience.job4.period">2019 — 2020</p><ul class="muted"><li data-i18n="experience.job4.item1">Сбор/анализ, декомпозиция и приоритизация.</li><li data-i18n="experience.job4.item2">Фасилитация встреч и межкомандные коммуникации.</li></ul></div>
       </div>
     </div>
   </section>
@@ -272,11 +306,11 @@
   <!-- CASES -->
   <section id="cases" class="section">
     <div class="container">
-      <h2 class="h2">Ключевые кейсы</h2>
+      <h2 class="h2" data-i18n="cases.title">Ключевые кейсы</h2>
       <div class="grid cols-3" style="margin-top:6px">
-        <article class="card reveal"><div class="card-title">Sticker Card (MasterCard) · AVO</div><p class="small muted">2024–2025</p><p class="p">Запуск инновационного продукта и сертификация MasterCard. Вёл согласования с ИТ/риск/комплаенс/маркетинг, организовал взаимодействие команд. Результат — выход в срок, рост клиентской базы.</p></article>
-        <article class="card reveal"><div class="card-title">Agile‑трансформация департамента · AVO</div><p class="small muted">2024–2025</p><p class="p">Внедрил Scrum/канбан практики, DoR/DoD, регулярные демо. Ввёл метрики (lead/cycle time, velocity, CFD). Результат — −15% TTM, повышение автономности.</p></article>
-        <article class="card reveal"><div class="card-title">Миграция CRM и обучение 200+ сотрудников · AVO</div><p class="small muted">2024–2025</p><p class="p">Отбор платформы, интеграции (колл‑центр, фронт‑офис), миграция данных и обучение персонала. Результат — рост качества сервиса и прозрачности.</p></article>
+        <article class="card reveal"><div class="card-title" data-i18n="cases.case1.title">Sticker Card (MasterCard) · AVO</div><p class="small muted" data-i18n="cases.case1.period">2024–2025</p><p class="p" data-i18n="cases.case1.desc">Запуск инновационного продукта и сертификация MasterCard. Вёл согласования с ИТ/риск/комплаенс/маркетинг, организовал взаимодействие команд. Результат — выход в срок, рост клиентской базы.</p></article>
+        <article class="card reveal"><div class="card-title" data-i18n="cases.case2.title">Agile‑трансформация департамента · AVO</div><p class="small muted" data-i18n="cases.case2.period">2024–2025</p><p class="p" data-i18n="cases.case2.desc">Внедрил Scrum/канбан практики, DoR/DoD, регулярные демо. Ввёл метрики (lead/cycle time, velocity, CFD). Результат — −15% TTM, повышение автономности.</p></article>
+        <article class="card reveal"><div class="card-title" data-i18n="cases.case3.title">Миграция CRM и обучение 200+ сотрудников · AVO</div><p class="small muted" data-i18n="cases.case3.period">2024–2025</p><p class="p" data-i18n="cases.case3.desc">Отбор платформы, интеграции (колл‑центр, фронт‑офис), миграция данных и обучение персонала. Результат — рост качества сервиса и прозрачности.</p></article>
       </div>
     </div>
   </section>
@@ -284,50 +318,50 @@
   <!-- SKILLS -->
   <section id="skills" class="section">
     <div class="container">
-      <h2 class="h2">Навыки</h2>
+      <h2 class="h2" data-i18n="skills.title">Навыки</h2>
       <div class="grid cols-2" style="margin-top:8px">
         <div class="card reveal">
-          <div class="card-title">Core (уровень)</div>
+          <div class="card-title" data-i18n="skills.core.title">Core (уровень)</div>
           <div class="bars" style="margin-top:10px">
-            <div class="label">Agile</div>
+            <div class="label" data-i18n="skills.core.agile">Agile</div>
             <div class="bar"><i data-w="95"></i></div>
-            <div class="label" style="margin-top:8px">Scrum</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.core.scrum">Scrum</div>
             <div class="bar"><i data-w="92"></i></div>
-            <div class="label" style="margin-top:8px">Лидерство</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.core.leadership">Лидерство</div>
             <div class="bar"><i data-w="88"></i></div>
-            <div class="label" style="margin-top:8px">Delivery</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.core.delivery">Delivery</div>
             <div class="bar"><i data-w="89"></i></div>
-            <div class="label" style="margin-top:8px">Stakeholders</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.core.stakeholders">Stakeholders</div>
             <div class="bar"><i data-w="93"></i></div>
           </div>
         </div>
         <div class="card reveal">
-          <div class="card-title">Инструменты и практики</div>
+          <div class="card-title" data-i18n="skills.tools.title">Инструменты и практики</div>
           <div class="bars" style="margin-top:10px">
-            <div class="label">Jira/Confluence</div>
+            <div class="label" data-i18n="skills.tools.jira">Jira/Confluence</div>
             <div class="bar"><i data-w="90"></i></div>
-            <div class="label" style="margin-top:8px">Kanban</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.tools.kanban">Kanban</div>
             <div class="bar"><i data-w="85"></i></div>
-            <div class="label" style="margin-top:8px">Roadmapping</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.tools.roadmapping">Roadmapping</div>
             <div class="bar"><i data-w="88"></i></div>
-            <div class="label" style="margin-top:8px">Portfolio mgmt</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.tools.portfolio">Portfolio mgmt</div>
             <div class="bar"><i data-w="84"></i></div>
-            <div class="label" style="margin-top:8px">Analytics</div>
+            <div class="label" style="margin-top:8px" data-i18n="skills.tools.analytics">Analytics</div>
             <div class="bar"><i data-w="80"></i></div>
           </div>
         </div>
       </div>
       <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); margin-top:12px">
-        <div class="pill">Project management</div>
-        <div class="pill">Scrum</div>
-        <div class="pill">Kanban</div>
-        <div class="pill">Portfolio mgmt</div>
-        <div class="pill">Roadmapping</div>
-        <div class="pill">Stakeholder mgmt</div>
-        <div class="pill">Risk mgmt</div>
-        <div class="pill">Jira/Confluence</div>
-        <div class="pill">Google Workspace</div>
-        <div class="pill">MS Office</div>
+        <div class="pill" data-i18n="skills.pills.project">Project management</div>
+        <div class="pill" data-i18n="skills.pills.scrum">Scrum</div>
+        <div class="pill" data-i18n="skills.pills.kanban">Kanban</div>
+        <div class="pill" data-i18n="skills.pills.portfolio">Portfolio mgmt</div>
+        <div class="pill" data-i18n="skills.pills.roadmapping">Roadmapping</div>
+        <div class="pill" data-i18n="skills.pills.stakeholder">Stakeholder mgmt</div>
+        <div class="pill" data-i18n="skills.pills.risk">Risk mgmt</div>
+        <div class="pill" data-i18n="skills.pills.jira">Jira/Confluence</div>
+        <div class="pill" data-i18n="skills.pills.google">Google Workspace</div>
+        <div class="pill" data-i18n="skills.pills.office">MS Office</div>
       </div>
     </div>
   </section>
@@ -335,13 +369,13 @@
   <!-- EDUCATION -->
   <section id="education" class="section">
     <div class="container">
-      <h2 class="h2">Образование и сертификаты</h2>
+      <h2 class="h2" data-i18n="education.title">Образование и сертификаты</h2>
       <div class="grid cols-2" style="margin-top:8px">
-        <div class="card reveal"><div class="card-title">Образование</div>
-          <ul class="muted"><li><strong>Бакалавр, Менеджмент</strong> — ТИИИМСХ, 2014</li><li>Ташкентский Профессиональный Колледж ИТ, 2010</li></ul>
+        <div class="card reveal"><div class="card-title" data-i18n="education.education.title">Образование</div>
+          <ul class="muted"><li><strong data-i18n="education.education.item1">Бакалавр, Менеджмент</strong> — ТИИИМСХ, 2014</li><li data-i18n="education.education.item2">Ташкентский Профессиональный Колледж ИТ, 2010</li></ul>
         </div>
-        <div class="card reveal"><div class="card-title">Курсы / Экзамены</div>
-          <ul class="muted"><li>PMBOK7, Udemy — 2024</li><li>Professional Scrum Master (PSM), ScrumTrek — 2024</li></ul>
+        <div class="card reveal"><div class="card-title" data-i18n="education.courses.title">Курсы / Экзамены</div>
+          <ul class="muted"><li data-i18n="education.courses.item1">PMBOK7, Udemy — 2024</li><li data-i18n="education.courses.item2">Professional Scrum Master (PSM), ScrumTrek — 2024</li></ul>
         </div>
       </div>
     </div>
@@ -350,22 +384,22 @@
   <!-- CONTACTS / CTA -->
   <section id="contacts" class="section">
     <div class="container">
-      <h2 class="h2">Контакты</h2>
+      <h2 class="h2" data-i18n="contacts.title">Контакты</h2>
       <div class="grid cols-2" style="margin-top:12px">
         <div class="card reveal">
-          <div class="card-title">Свяжитесь</div>
-          <p class="p">Обсудим цели, ограничения и план релиза.</p>
+          <div class="card-title" data-i18n="contacts.contact.title">Свяжитесь</div>
+          <p class="p" data-i18n="contacts.contact.desc">Обсудим цели, ограничения и план релиза.</p>
           <div style="display:flex; gap:12px; flex-wrap:wrap; margin:10px 0 14px">
-            <a class="cta" href="tel:+998909900608" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span>Позвонить</span></a>
-            <a class="cta" href="mailto:galchevsky.v.i@gmail.com" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span>Написать Email</span></a>
-            <a class="cta" href="#" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span>LinkedIn</span></a>
+            <a class="cta" href="tel:+998909900608" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span data-i18n="contacts.contact.call">Позвонить</span></a>
+            <a class="cta" href="mailto:galchevsky.v.i@gmail.com" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span data-i18n="contacts.contact.email">Написать Email</span></a>
+            <a class="cta" href="#" onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span data-i18n="contacts.contact.linkedin">LinkedIn</span></a>
           </div>
-          <p class="muted small">Ожидания по компенсации: 3000$ на руки. Форматы: полная/частичная занятость, проектная работа.</p>
+          <p class="muted small" data-i18n="contacts.contact.salary">Ожидания по компенсации: 3000$ на руки. Форматы: полная/частичная занятость, проектная работа.</p>
         </div>
         <div id="cv" class="card reveal">
-          <div class="card-title">Резюме (PDF)</div>
-          <p class="p">Скачать полную версию резюме.</p>
-          <a class="cta" id="resumeLink" href="./Резюме_Менеджер_проектов_Vladislav_Galchevskiy_от_13_09_2025_16.pdf" type="application/pdf" download onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span>Скачать PDF</span></a>
+          <div class="card-title" data-i18n="contacts.resume.title">Резюме (PDF)</div>
+          <p class="p" data-i18n="contacts.resume.desc">Скачать полную версию резюме.</p>
+          <a class="cta" id="resumeLink" href="./Резюме_Менеджер_проектов_Vladislav_Galchevskiy_от_13_09_2025_16.pdf" type="application/pdf" download onmousemove="btnHover(event)" onmouseleave="btnLeave(event)"><span data-i18n="contacts.resume.download">Скачать PDF</span></a>
         </div>
       </div>
     </div>
@@ -375,9 +409,9 @@
     <div class="container footer-grid">
       <div>
         <strong>Владислав Гальчевский</strong>
-        <p class="small muted">Project / Product Manager. Финтех, Телеком, ИТ. Agile/Scrum, процессы, метрики.</p>
+        <p class="small muted" data-i18n="footer.desc">Project / Product Manager. Финтех, Телеком, ИТ. Agile/Scrum, процессы, метрики.</p>
       </div>
-      <div class="small muted">© <span id="year"></span> В. Гальчевский</div>
+      <div class="small muted">© <span id="year"></span> <span data-i18n="footer.copyright">В. Гальчевский</span></div>
     </div>
   </footer>
 
@@ -392,8 +426,23 @@
     function el(id){ return document.getElementById(id) }
 
     // Mobile menu
-    function toggleMenu(btn){ const m=el('menu'); const open=m.classList.toggle('open'); document.body.classList.toggle('menu-open', open); btn.setAttribute('aria-expanded', open); setNavHeightVar(); }
-    function closeMenu(){ const m=el('menu'); m.classList.remove('open'); document.body.classList.remove('menu-open'); setNavHeightVar(); }
+    function toggleMenu(btn){ 
+      const m=el('menu'); 
+      const overlay = el('menuOverlay');
+      const open=m.classList.toggle('open'); 
+      document.body.classList.toggle('menu-open', open); 
+      btn.setAttribute('aria-expanded', open);
+      overlay.classList.toggle('active', open);
+      setNavHeightVar(); 
+    }
+    function closeMenu(){ 
+      const m=el('menu'); 
+      const overlay = el('menuOverlay');
+      m.classList.remove('open'); 
+      document.body.classList.remove('menu-open'); 
+      overlay.classList.remove('active');
+      setNavHeightVar(); 
+    }
 
     // Theme toggle (Light vs Dark Side)
     function toggleTheme(e){ const html=document.documentElement; const isLight = html.getAttribute('data-theme')==='light'; html.setAttribute('data-theme', isLight? 'dark':'light'); syncStarColor(); if(window.__rebuildStars) window.__rebuildStars(); }
@@ -439,6 +488,320 @@
 
     // Resume link fallback placeholder
     (async function ensureResume(){ const a=el('resumeLink'); if(!a) return; const primary=a.getAttribute('href'); try{ const r=await fetch(primary,{method:'HEAD'}); if(!r || !r.ok){ a.removeAttribute('download'); a.setAttribute('target','_blank'); } }catch(err){ a.removeAttribute('download'); a.setAttribute('target','_blank'); } })();
+
+    // Background music
+    (function() {
+      const music = el('backgroundMusic');
+      const musicControl = el('musicControl');
+      let musicStarted = false;
+
+      // Function to start music
+      function startMusic() {
+        if (!musicStarted) {
+          music.volume = 0.3; // Set volume to 30%
+          music.play().then(() => {
+            musicStarted = true;
+            musicControl.classList.remove('muted');
+          }).catch(error => {
+            console.log('Autoplay prevented:', error);
+            // Show muted state if autoplay is blocked
+            musicControl.classList.add('muted');
+          });
+        }
+      }
+
+      // Try to start music on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add a small delay to ensure everything is loaded
+        setTimeout(startMusic, 1000);
+      });
+
+      // Music control button click handler
+      musicControl.addEventListener('click', function() {
+        if (music.paused) {
+          music.play();
+          musicControl.classList.remove('muted');
+        } else {
+          music.pause();
+          musicControl.classList.add('muted');
+        }
+      });
+
+      // Also try to start music on first user interaction
+      document.body.addEventListener('click', function() {
+        if (!musicStarted) {
+          startMusic();
+        }
+      }, { once: true });
+    })();
+
+    // Language switching
+    const translations = {
+      ru: {
+        "nav.about": "Обо мне",
+        "nav.experience": "Опыт",
+        "nav.cases": "Кейсы",
+        "nav.skills": "Навыки",
+        "nav.education": "Обучение",
+        "nav.contacts": "Контакты",
+        "nav.lang": "EN",
+        "nav.theme": "Переключить сторону",
+        
+        "hero.location": "Ташкент • Узбекистан • Готов к переезду и редким командировкам",
+        "hero.title": "Владислав Гальчевский — Project / Product Manager",
+        "hero.subtitle": "Agile/Scrum, процессы и метрики. 13+ лет в финтех/телеком/ИТ. Помогаю командам ускоряться, становиться предсказуемыми и выпускать ценность регулярными релизами.",
+        "hero.email": "Написать на Email",
+        "hero.download": "Скачать резюме (PDF)",
+        "hero.kpi1": "ускорение вывода фич",
+        "hero.kpi2": "Time‑to‑Market",
+        "hero.kpi3": "обученных сотрудников",
+        "hero.kpi4": "пользователей MVP",
+        
+        "crawl.line1": "Episode I: The Project Manager Awakens",
+        "crawl.line2": "Балансирует между светлой и тёмной сторонами Agile, ведя команды к предсказуемости и ценности.",
+        "crawl.line3": "Миссия: скорость вывода, прозрачность, развитие людей.",
+        
+        "quickContacts.title": "Контакты одним взглядом",
+        "quickContacts.location": "Ташкент, Узбекистан",
+        
+        "about.title": "О Владиславе",
+        "about.item1": "13+ лет опыта в управлении проектами и продуктами, финтех/телеком/ИТ.",
+        "about.item2": "Agile/Scrum, трансформация процессов, масштабирование практик.",
+        "about.item3": "Метрики и данные → управляемость и предсказуемость.",
+        "about.item4": "Обучил и развил 200+ специалистов (воркшопы, менторство).",
+        
+        "experience.title": "Опыт",
+        "experience.job1.title": "Project Manager / Scrum Master — AVO Services and Technology",
+        "experience.job1.period": "2024 — н.в. · Ташкент",
+        "experience.job1.item1": "Сформировал 3+ кросс‑функциональные команды, вывел их на зрелость.",
+        "experience.job1.item2": "DoR/DoD, ретроспективы, refinement → +25–30% скорости.",
+        "experience.job1.item3": "Метрики burnup/burndown, velocity, CFD → рост предсказуемости.",
+        "experience.job1.item4": "Сократил до 70% внутренних блокеров на стадии планирования.",
+        "experience.job1.item5": "Масштабирование практик (LeSS, Scrum of Scrums).",
+        
+        "experience.job2.title": "Project Manager — AO Paynet",
+        "experience.job2.period": "март 2024 — н.в. · Ташкент",
+        "experience.job2.item1": "Полный цикл проектов: от идеи до релиза.",
+        "experience.job2.item2": "Коммуникации со стейкхолдерами, управление командой.",
+        "experience.job2.item3": "ТЗ, требования, договорная работа, тестирование.",
+        
+        "experience.job3.title": "Project Manager — ООО «LEDИ» / OOO \"Unitel\" (Telecom)",
+        "experience.job3.period": "2016 — 2024",
+        "experience.job3.item1": "Планирование, команда, юридические документы.",
+        "experience.job3.item2": "Операционный контроль, урегулирование внештатных ситуаций.",
+        "experience.job3.item3": "Ретроспективы, отчётность.",
+        
+        "experience.job4.title": "Project Manager — Codeband Digital",
+        "experience.job4.period": "2019 — 2020",
+        "experience.job4.item1": "Сбор/анализ, декомпозиция и приоритизация.",
+        "experience.job4.item2": "Фасилитация встреч и межкомандные коммуникации.",
+        
+        "cases.title": "Ключевые кейсы",
+        "cases.case1.title": "Sticker Card (MasterCard) · AVO",
+        "cases.case1.period": "2024–2025",
+        "cases.case1.desc": "Запуск инновационного продукта и сертификация MasterCard. Вёл согласования с ИТ/риск/комплаенс/маркетинг, организовал взаимодействие команд. Результат — выход в срок, рост клиентской базы.",
+        "cases.case2.title": "Agile‑трансформация департамента · AVO",
+        "cases.case2.period": "2024–2025",
+        "cases.case2.desc": "Внедрил Scrum/канбан практики, DoR/DoD, регулярные демо. Ввёл метрики (lead/cycle time, velocity, CFD). Результат — −15% TTM, повышение автономности.",
+        "cases.case3.title": "Миграция CRM и обучение 200+ сотрудников · AVO",
+        "cases.case3.period": "2024–2025",
+        "cases.case3.desc": "Отбор платформы, интеграции (колл‑центр, фронт‑офис), миграция данных и обучение персонала. Результат — рост качества сервиса и прозрачности.",
+        
+        "skills.title": "Навыки",
+        "skills.core.title": "Core (уровень)",
+        "skills.core.agile": "Agile",
+        "skills.core.scrum": "Scrum",
+        "skills.core.leadership": "Лидерство",
+        "skills.core.delivery": "Delivery",
+        "skills.core.stakeholders": "Stakeholders",
+        "skills.tools.title": "Инструменты и практики",
+        "skills.tools.jira": "Jira/Confluence",
+        "skills.tools.kanban": "Kanban",
+        "skills.tools.roadmapping": "Roadmapping",
+        "skills.tools.portfolio": "Portfolio mgmt",
+        "skills.tools.analytics": "Analytics",
+        "skills.pills.project": "Project management",
+        "skills.pills.scrum": "Scrum",
+        "skills.pills.kanban": "Kanban",
+        "skills.pills.portfolio": "Portfolio mgmt",
+        "skills.pills.roadmapping": "Roadmapping",
+        "skills.pills.stakeholder": "Stakeholder mgmt",
+        "skills.pills.risk": "Risk mgmt",
+        "skills.pills.jira": "Jira/Confluence",
+        "skills.pills.google": "Google Workspace",
+        "skills.pills.office": "MS Office",
+        
+        "education.title": "Образование и сертификаты",
+        "education.education.title": "Образование",
+        "education.education.item1": "Бакалавр, Менеджмент",
+        "education.education.item2": "Ташкентский Профессиональный Колледж ИТ, 2010",
+        "education.courses.title": "Курсы / Экзамены",
+        "education.courses.item1": "PMBOK7, Udemy — 2024",
+        "education.courses.item2": "Professional Scrum Master (PSM), ScrumTrek — 2024",
+        
+        "contacts.title": "Контакты",
+        "contacts.contact.title": "Свяжитесь",
+        "contacts.contact.desc": "Обсудим цели, ограничения и план релиза.",
+        "contacts.contact.call": "Позвонить",
+        "contacts.contact.email": "Написать Email",
+        "contacts.contact.linkedin": "LinkedIn",
+        "contacts.contact.salary": "Ожидания по компенсации: 3000$ на руки. Форматы: полная/частичная занятость, проектная работа.",
+        "contacts.resume.title": "Резюме (PDF)",
+        "contacts.resume.desc": "Скачать полную версию резюме.",
+        "contacts.resume.download": "Скачать PDF",
+        
+        "footer.desc": "Project / Product Manager. Финтех, Телеком, ИТ. Agile/Scrum, процессы, метрики.",
+        "footer.copyright": "В. Гальчевский"
+      },
+      en: {
+        "nav.about": "About",
+        "nav.experience": "Experience",
+        "nav.cases": "Cases",
+        "nav.skills": "Skills",
+        "nav.education": "Education",
+        "nav.contacts": "Contacts",
+        "nav.lang": "RU",
+        "nav.theme": "Switch Side",
+        
+        "hero.location": "Tashkent • Uzbekistan • Ready to relocate and occasional business trips",
+        "hero.title": "Vladislav Galchevsky — Project / Product Manager",
+        "hero.subtitle": "Agile/Scrum, processes and metrics. 13+ years in fintech/telecom/IT. Helping teams accelerate, become predictable and deliver value through regular releases.",
+        "hero.email": "Write to Email",
+        "hero.download": "Download Resume (PDF)",
+        "hero.kpi1": "feature delivery acceleration",
+        "hero.kpi2": "Time‑to‑Market",
+        "hero.kpi3": "trained employees",
+        "hero.kpi4": "MVP users",
+        
+        "crawl.line1": "Episode I: The Project Manager Awakens",
+        "crawl.line2": "Balancing between light and dark sides of Agile, leading teams to predictability and value.",
+        "crawl.line3": "Mission: delivery speed, transparency, people development.",
+        
+        "quickContacts.title": "Contacts at a Glance",
+        "quickContacts.location": "Tashkent, Uzbekistan",
+        
+        "about.title": "About Vladislav",
+        "about.item1": "13+ years of experience in project and product management, fintech/telecom/IT.",
+        "about.item2": "Agile/Scrum, process transformation, scaling practices.",
+        "about.item3": "Metrics and data → manageability and predictability.",
+        "about.item4": "Trained and developed 200+ specialists (workshops, mentorship).",
+        
+        "experience.title": "Experience",
+        "experience.job1.title": "Project Manager / Scrum Master — AVO Services and Technology",
+        "experience.job1.period": "2024 — present · Tashkent",
+        "experience.job1.item1": "Formed 3+ cross-functional teams, brought them to maturity.",
+        "experience.job1.item2": "DoR/DoD, retrospectives, refinement → +25–30% velocity.",
+        "experience.job1.item3": "Burnup/burndown, velocity, CFD metrics → predictability growth.",
+        "experience.job1.item4": "Reduced up to 70% internal blockers at planning stage.",
+        "experience.job1.item5": "Practice scaling (LeSS, Scrum of Scrums).",
+        
+        "experience.job2.title": "Project Manager — AO Paynet",
+        "experience.job2.period": "March 2024 — present · Tashkent",
+        "experience.job2.item1": "Full project cycle: from idea to release.",
+        "experience.job2.item2": "Stakeholder communications, team management.",
+        "experience.job2.item3": "SRS, requirements, contractual work, testing.",
+        
+        "experience.job3.title": "Project Manager — LLC «LEDИ» / LLC \"Unitel\" (Telecom)",
+        "experience.job3.period": "2016 — 2024",
+        "experience.job3.item1": "Planning, team, legal documents.",
+        "experience.job3.item2": "Operational control, emergency resolution.",
+        "experience.job3.item3": "Retrospectives, reporting.",
+        
+        "experience.job4.title": "Project Manager — Codeband Digital",
+        "experience.job4.period": "2019 — 2020",
+        "experience.job4.item1": "Gathering/analysis, decomposition and prioritization.",
+        "experience.job4.item2": "Meeting facilitation and cross-team communications.",
+        
+        "cases.title": "Key Cases",
+        "cases.case1.title": "Sticker Card (MasterCard) · AVO",
+        "cases.case1.period": "2024–2025",
+        "cases.case1.desc": "Launch of innovative product and MasterCard certification. Led approvals with IT/risk/compliance/marketing, organized team collaboration. Result - on-time delivery, customer base growth.",
+        "cases.case2.title": "Agile transformation of department · AVO",
+        "cases.case2.period": "2024–2025",
+        "cases.case2.desc": "Implemented Scrum/Kanban practices, DoR/DoD, regular demos. Introduced metrics (lead/cycle time, velocity, CFD). Result - −15% TTM, increased autonomy.",
+        "cases.case3.title": "CRM migration and training 200+ employees · AVO",
+        "cases.case3.period": "2024–2025",
+        "cases.case3.desc": "Platform selection, integrations (call center, front office), data migration and staff training. Result - service quality and transparency growth.",
+        
+        "skills.title": "Skills",
+        "skills.core.title": "Core (level)",
+        "skills.core.agile": "Agile",
+        "skills.core.scrum": "Scrum",
+        "skills.core.leadership": "Leadership",
+        "skills.core.delivery": "Delivery",
+        "skills.core.stakeholders": "Stakeholders",
+        "skills.tools.title": "Tools & Practices",
+        "skills.tools.jira": "Jira/Confluence",
+        "skills.tools.kanban": "Kanban",
+        "skills.tools.roadmapping": "Roadmapping",
+        "skills.tools.portfolio": "Portfolio mgmt",
+        "skills.tools.analytics": "Analytics",
+        "skills.pills.project": "Project management",
+        "skills.pills.scrum": "Scrum",
+        "skills.pills.kanban": "Kanban",
+        "skills.pills.portfolio": "Portfolio mgmt",
+        "skills.pills.roadmapping": "Roadmapping",
+        "skills.pills.stakeholder": "Stakeholder mgmt",
+        "skills.pills.risk": "Risk mgmt",
+        "skills.pills.jira": "Jira/Confluence",
+        "skills.pills.google": "Google Workspace",
+        "skills.pills.office": "MS Office",
+        
+        "education.title": "Education & Certificates",
+        "education.education.title": "Education",
+        "education.education.item1": "Bachelor, Management",
+        "education.education.item2": "Tashkent Professional IT College, 2010",
+        "education.courses.title": "Courses / Exams",
+        "education.courses.item1": "PMBOK7, Udemy — 2024",
+        "education.courses.item2": "Professional Scrum Master (PSM), ScrumTrek — 2024",
+        
+        "contacts.title": "Contacts",
+        "contacts.contact.title": "Get in Touch",
+        "contacts.contact.desc": "Let's discuss goals, constraints and release plan.",
+        "contacts.contact.call": "Call",
+        "contacts.contact.email": "Write Email",
+        "contacts.contact.linkedin": "LinkedIn",
+        "contacts.contact.salary": "Compensation expectations: $3000 net. Formats: full/part-time, project work.",
+        "contacts.resume.title": "Resume (PDF)",
+        "contacts.resume.desc": "Download full version of resume.",
+        "contacts.resume.download": "Download PDF",
+        
+        "footer.desc": "Project / Product Manager. Fintech, Telecom, IT. Agile/Scrum, processes, metrics.",
+        "footer.copyright": "V. Galchevsky"
+      }
+    };
+
+    let currentLang = 'ru';
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'ru' ? 'en' : 'ru';
+      applyTranslations();
+    }
+
+    function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[currentLang][key]) {
+          if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            element.placeholder = translations[currentLang][key];
+          } else {
+            element.textContent = translations[currentLang][key];
+          }
+        }
+      });
+      
+      // Update language switcher text
+      const langSwitcher = document.querySelector('.lang-switcher');
+      if (langSwitcher) {
+        langSwitcher.textContent = translations[currentLang]['nav.lang'];
+      }
+      
+      // Update HTML lang attribute
+      document.documentElement.lang = currentLang;
+    }
+
+    // Initialize translations
+    document.addEventListener('DOMContentLoaded', applyTranslations);
   </script>
 </body>
 </html>
